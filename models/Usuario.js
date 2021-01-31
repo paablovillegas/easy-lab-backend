@@ -13,6 +13,21 @@ const UsuarioSchema = Schema({
     password: {
         type: String,
         required: true,
+    },
+    password_last_change: {
+        type: Date,
+        default: new Date(),
+    },
+    active: {
+        type: Boolean,
+        default: true,
+    },
+    roles: {
+        type: [String],
+        default: [],
+    },
+    laboratory: {
+        type: String
     }
 });
 
