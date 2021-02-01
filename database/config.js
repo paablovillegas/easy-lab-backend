@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+//Prevent deprecation of `findOneAndUpdate()` and `findOneAndDelete()
+mongoose.set('useFindAndModify', false);
+
 const dbConnection = async () => {
     try {
         await mongoose.connect(process.env.LOCAL_DB_CONN || process.env.DB_CONN, {
