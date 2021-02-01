@@ -1,11 +1,47 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarJWT, validarChangePasswordJWT } = require('../middlewares/validar-jwt');
 const { validarCampos } = require('../middlewares/validar-campos')
-const { crearUsuario, updateUsuario, loginUsuario, renewToken, updatePassword } = require('../controllers/auth');
+const {
+    crearUsuario,
+    loginUsuario,
+    renewToken,
+    updatePasswordAdmin,
+    updateUsuario,
+    updatePasswordWithToken,
+    generateTokenChangepassword
+} = require('../controllers/auth');
 
 const router = Router();
+
+//Endpoints públicos
+router.post(
+    '/',
+    [
+        check('email', 'E-mail obligatorio').isEmail(),
+        check('password', 'Password obligatorio y mayor a 8 caracteres').isLength({ min: 8 }),
+        validarCampos,
+    ],
+    loginUsuario
+);
+
+router.post(
+    '/forgot_password',
+    [
+        check('password', 'Password obligatorio').isLength({ min: 8 }),
+        validarChangePasswordJWT,
+    ],
+    updatePasswordWithToken,
+);
+
+router.use(validarJWT);
+
+router.post(
+    '/jwt/change_password',
+    generateTokenChangepassword
+);
+
 
 router.post(
     '/new',
@@ -28,23 +64,9 @@ router.put(
 router.put(
     '/:uid/password',
     //TODO: comprobar password antigua
-    updatePassword
+    updatePasswordAdmin
 )
-router.post(
-    '/',
-    [
-        check('email', 'E-mail obligatorio').isEmail(),
-        check('password', 'Password obligatorio y mayor a 8 caracteres').isLength({ min: 8 }),
-        validarCampos,
-    ],
-    loginUsuario
-);
-router.get(
-    '/renew',
-    [
-        validarJWT,
-    ],
-    renewToken
-);
+
+router.get('/renew', renewToken);
 
 module.exports = router;

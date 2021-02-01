@@ -1,10 +1,21 @@
-const { response } = require('express');
+const { response, request } = require('express');
 const bcrypt = require('bcryptjs');
 
-const { generateJWT } = require('../helpers/jwt');
+const { generateJWT, generateJWTChangePassword } = require('../helpers/jwt');
 const Usuario = require('../models/Usuario');
 
-const crearUsuario = async (req, res = response) => {
+const generateToken = async (uid, email, roles) => await generateJWT(uid, email, roles);
+
+const generateTokenResetPassword = async (email) => await generateJWTChangePassword(email);
+
+const compareCredentials = (password, stored) => bcrypt.compareSync(password, stored);
+
+const generatePassword = (password) => {
+    const salt = bcrypt.genSalt();
+    return bcrypt.hashSync(password, salt);
+}
+
+const crearUsuario = async (req = request, res = response) => {
     const { email, password } = req.body;
     try {
         let usuario = await Usuario.findOne({ email });
@@ -14,9 +25,7 @@ const crearUsuario = async (req, res = response) => {
                 msg: 'Correo ya registrado!'
             });
         usuario = new Usuario(req.body);
-        //Encripcion contraseña
-        const salt = bcrypt.genSaltSync();
-        usuario.password = bcrypt.hashSync(password, salt);
+        usuario.password = generatePassword(password);
         await usuario.save();
         res.status(201).json({ ok: true });
     } catch (err) {
@@ -27,7 +36,7 @@ const crearUsuario = async (req, res = response) => {
     }
 };
 
-const updateUsuario = async (req, res = response) => {
+const updateUsuario = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
         let usuario = await Usuario.findById(uid);
@@ -48,15 +57,15 @@ const updateUsuario = async (req, res = response) => {
     }
 }
 
-const updatePassword = async (req, res = response) => {
-    const { uid } = req.params;
+// Admin actualiza contraseña de contacto, es necesaria la contraseña del amdin
+const updatePasswordAdmin = async (req = request, res = response) => {
+    const { admin_password, password } = req.body;
+    //TODO: checar token role
     try {
         let usuario = await Usuario.findById(uid);
         if (!usuario)
             return res.status(400).json({ ok: false });
-        const salt = bcrypt.genSaltSync();
-        const { password } = req.body;
-        usuario.password = bcrypt.hashSync(password, salt);
+        usuario.password = generatePassword(password);
         await usuario.save();
         return res.status(204).json();
     } catch (err) {
@@ -67,7 +76,72 @@ const updatePassword = async (req, res = response) => {
     }
 }
 
-const loginUsuario = async (req, res = response) => {
+const generateTokenChangepassword = async (req = request, res = response) => {
+    const { email } = req.body;
+    try {
+        let usuario = await Usuario.findOne({ email });
+        if (!usuario) return res.status(400).json({ ok: false });
+        const token = await generateJWTChangePassword(email);
+        res.json({
+            token
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false
+        });
+    }
+}
+
+//Cambio de contraseña por el usuario
+const updatePasswordWithOldPassword = async (req = request, res = response) => {
+    //TODO: quitar uid y mandar token
+    const { uid } = req.params;
+    const { old_password, new_password } = req.body;
+    try {
+        let usuario = await Usuario.findById(uid);
+        if (!usuario)
+            return res.status(400).json({ ok: false });
+        const validateOldPassword = bcrypt.compareSync(old_password, usuario.password);
+        if (!validateOldPassword)
+            return res.status(400).json({
+                ok: false,
+                msg: 'Credenciales incorrectas'
+            });
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(new_password, salt);
+        await usuario.save();
+        res.status(204).json();
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false
+        });
+    }
+}
+
+//Cambio de contraseña cuando el usuario no recuerda el password
+const updatePasswordWithToken = async (req = request, res = response) => {
+    const { email, body } = req;
+    const { password } = body;
+    try {
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario) 
+            return res.status(400).json({ ok: false });
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(password, salt);
+        usuario.password_last_change = new Date();
+        await usuario.save();
+        return res.status(204).json();
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false
+        });
+    }
+}
+
+const loginUsuario = async (req = request, res = response) => {
     const { email, password } = req.body;
     try {
         let usuario = await Usuario.findOne({ email });
@@ -76,13 +150,13 @@ const loginUsuario = async (req, res = response) => {
                 ok: false,
                 msg: 'Usuario o contraseña no inválido',
             });
-        const validarPasswords = bcrypt.compareSync(password, usuario.password);
+        const validarPasswords = compareCredentials(password, usuario.password);
         if (!validarPasswords)
             return res.status(400).json({
                 ok: false,
                 msg: 'Usuario o contraseña no inválido'
             });
-        const token = await generateJWT(usuario.id, usuario.name);
+        const token = generateToken(usuario.id, usuario.name, usuario.roles);
         res.json({
             ok: true,
             id: usuario.id,
@@ -94,8 +168,8 @@ const loginUsuario = async (req, res = response) => {
         });
     }
 };
-const renewToken = async (req, res = response) => {
-    const token = await generateJWT(req.uid, req.name);
+const renewToken = async (req = request, res = response) => {
+    const token = generateToken(req.uid, req.name, req.roles);
     res.json({
         ok: true,
         token,
@@ -105,7 +179,10 @@ const renewToken = async (req, res = response) => {
 module.exports = {
     crearUsuario,
     updateUsuario,
-    updatePassword,
+    generateTokenChangepassword,
+    updatePasswordAdmin,
+    updatePasswordWithOldPassword,
+    updatePasswordWithToken,
     loginUsuario,
     renewToken
 };
