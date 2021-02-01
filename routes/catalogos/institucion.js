@@ -1,15 +1,14 @@
 const { Router } = require('express');
 const { check, oneOf } = require('express-validator');
 
-const { getInstituciones, insertInstitucion, updateInstitucion, deleteInstitucion } = require('../../controllers/catalogos/institucion');
+const { getInstituciones, insertInstitucion, updateInstitucion, deleteInstitucion, getInstitucion } = require('../../controllers/catalogos/institucion');
 const { validarCampos } = require('../../middlewares/validar-campos');
 
 const router = Router();
 
-router.get(
-    '/',
-    getInstituciones,
-);
+router.get('/', getInstituciones);
+
+router.get('/:uid', getInstitucion);
 
 router.post(
     '/',
@@ -19,7 +18,7 @@ router.post(
         validarCampos,
     ],
     insertInstitucion,
-)
+);
 
 router.put(
     '/:uid',
@@ -31,9 +30,6 @@ router.put(
     updateInstitucion,
 );
 
-router.delete(
-    '/:uid',
-    deleteInstitucion,
-)
+router.delete('/:uid', deleteInstitucion);
 
 module.exports = router;

@@ -18,6 +18,7 @@ app.use(express.json());
 //Routes
 app.use('/lab/auth', require('./routes/auth'));
 app.use('/lab/instituciones', require('./routes/catalogos/institucion'));
+app.use('/lab/doctores', require('./routes/catalogos/doctor'));
 
 const { PORT } = process.env;
 app.listen(PORT, () => {

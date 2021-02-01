@@ -1,11 +1,29 @@
-const { request, response } = require("express");
+const { request, response, json } = require("express");
 const Institucion = require("../../models/catalogos/Institucion");
 
 const getInstituciones = async (req = request, res = response) => {
     try {
         let instituciones = await Institucion.find();
-        console.log(instituciones);
         res.status(200).json({ ok: true, instituciones });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false
+        });
+    }
+}
+
+const getInstitucion = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        const institucion = await Institucion.findById(uid);
+        if (!institucion)
+            return res.status(400).json({
+                ok: false,
+                msg: 'Institución no registrada',
+            });
+        res.status(200).json({ ok: true, institucion });
+
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -22,11 +40,11 @@ const insertInstitucion = async (req = request, res = response) => {
         if (institucion)
             return res.status(400).json({
                 ok: false,
-                msg: 'Institución ya existente',
+                msg: 'Institución ya registrada',
             });
         institucion = new Institucion(req.body);
         await institucion.save();
-        res.sendStatus(201);
+        res.status(201).json({ ok: true, institucion });
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -38,13 +56,17 @@ const insertInstitucion = async (req = request, res = response) => {
 const updateInstitucion = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        let institucion = await Institucion.findById(uid);
+        const institucion = await Institucion.findById(uid);
         if (!institucion)
             return res.status(400).json({
                 ok: false,
-                msg: 'Institución no existente',
+                msg: 'Institución no registrada',
             });
-        institucion = await Institucion.findByIdAndUpdate(uid, req.body, { new: true });
+        institucion = await Institucion.findByIdAndUpdate(
+            uid,
+            req.body,
+            { new: true }
+        );
         res.status(200).json({ ok: true, institucion });
     } catch (err) {
         console.log(err);
@@ -63,7 +85,7 @@ const deleteInstitucion = (req = request, res = response) => {
                 if (err)
                     return res.status(400).json({
                         ok: false,
-                        msg: 'Institución no existente'
+                        msg: 'Institución no registrada'
                     });
                 res.status(200).json({ ok: true });
             }
@@ -78,6 +100,7 @@ const deleteInstitucion = (req = request, res = response) => {
 
 module.exports = {
     getInstituciones,
+    getInstitucion,
     insertInstitucion,
     updateInstitucion,
     deleteInstitucion,
