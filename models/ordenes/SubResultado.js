@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const ComponenteSchema = Schema({
+const SubResultadoSchema = Schema({
     componente: {
         type: String,
         required: true,
@@ -8,6 +8,9 @@ const ComponenteSchema = Schema({
     referencia: {
         type: String,
     },
+    resultado: {
+        type: String,
+    },
 });
 
-module.exports = model('Componente', ComponenteSchema);
+module.exports = model('SubResultado', SubResultadoSchema);

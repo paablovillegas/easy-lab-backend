@@ -34,6 +34,15 @@ const PacienteSchema = Schema({
         type: String,
         default: undefined,
     },
+    fecha_creacion: {
+        type: Date,
+        required: true,
+        default: new Date(),
+    },
+    fecha_actualizacion: {
+        type: Date,
+        default: undefined,
+    },
 });
 
 module.exports = model('Paciente', PacienteSchema);
