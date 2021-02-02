@@ -22,7 +22,7 @@ const getDoctor = async (req = request, res = resposne) => {
                 ok: false,
                 msg: 'Institución no registrado',
             });
-        json.status(200).body({ ok: true, doctor });
+        res.status(200).json({ ok: true, doctor });
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -58,7 +58,7 @@ const insertDoctor = async (req = request, res = response) => {
 const updateDoctor = async (req = request, res = resposne) => {
     const { uid } = req.params;
     try {
-        const doctor = await Doctor.findById(uid);
+        let doctor = await Doctor.findById(uid);
         if (!doctor)
             return res.status(400).json({
                 ok: false,

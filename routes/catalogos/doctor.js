@@ -1,6 +1,12 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { getDoctores, getDoctor, insertDoctor, updateDoctor, deleteDoctor } = require("../../controllers/catalogos/doctor");
+const { 
+    getDoctores, 
+    getDoctor, 
+    insertDoctor, 
+    updateDoctor, 
+    deleteDoctor 
+} = require("../../controllers/catalogos/doctor");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
