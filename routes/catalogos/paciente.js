@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { check, oneOf } = require("express-validator");
 
 const { 
     getPacientes, 
@@ -7,14 +8,53 @@ const {
     updatePaciente, 
     deletePaciente 
 } = require('../../controllers/catalogos/paciente');
+const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
 
 router.get('/', getPacientes);
-router.get('/:uid', );
-router.post('/', );
-router.put('/:uid', );
-router.delete('/:uid', );
+
+router.get('/:uid', getPaciente);
+
+router.post(
+    '/',
+    [
+        check('nombre', 'Nombre obligatorio').exists().trim().not().isEmpty(),
+        check('apellido_paterno', 'Apellido paterno obligatorio').exists().trim().not().isEmpty(),
+        check('apellido_materno', 'Apellido materno erróneo').optional().trim().not().isEmpty(),
+        check('correo', 'Correo erróneo').optional().trim().isEmail(),
+        check('telefono', 'Telefono Obligatorio').optional().trim().isMobilePhone(),
+        check('genero', 'Genero Obligatorio').exists().trim().isNumeric(),
+        oneOf([
+            check('fecha_nacimiento', 'Fecha Nacimiento Obligatorio').exists().trim().isDate(),
+            check('fecha_nacimiento', 'Fecha Nacimiento Obligatorio').exists().trim().isNumeric(),
+        ]),
+        check('direccion', 'Direccion Obligatorio').optional().trim().isString().not().isEmpty(),
+        validarCampos
+    ],
+    insertPaciente
+);
+
+router.put(
+    '/:uid',
+    [
+        check('nombre', 'Nombre obligatorio').optional().trim().not().isEmpty(),
+        check('apellido_paterno', 'Apellido paterno obligatorio').optional().trim().not().isEmpty(),
+        check('apellido_materno', 'Apellido materno erróneo').optional().trim().not().isEmpty(),
+        check('correo', 'Correo erróneo').optional().trim().isEmail(),
+        check('telefono', 'Telefono Obligatorio').optional().trim().isMobilePhone(),
+        check('genero', 'Genero Obligatorio').optional().trim().isNumeric(),
+        oneOf([
+            check('fecha_nacimiento', 'Fecha Nacimiento Obligatorio').optional().trim().isDate(),
+            check('fecha_nacimiento', 'Fecha Nacimiento Obligatorio').optional().trim().isNumeric(),
+        ]),
+        check('direccion', 'Direccion Obligatorio').optional().trim().isString().not().isEmpty(),
+        validarCampos
+    ],
+    updatePaciente
+);
+
+router.delete('/:uid', deletePaciente);
 
 
 module.exports = router;

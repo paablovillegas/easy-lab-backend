@@ -28,7 +28,7 @@ const PacienteSchema = Schema({
     },
     fecha_nacimiento: {
         type: Date,
-        default: undefined,
+        required: true,
     },
     direccion: {
         type: String,
