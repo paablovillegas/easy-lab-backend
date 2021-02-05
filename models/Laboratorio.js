@@ -8,7 +8,7 @@ const LaboratorioSchema = Schema({
     },
     access_key: {
         type: String,
-        default: undefined,
+        required: true,
     },
     fecha_creacion: {
         type: Date,

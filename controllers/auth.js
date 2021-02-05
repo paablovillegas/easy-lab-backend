@@ -4,14 +4,10 @@ const bcrypt = require('bcryptjs');
 const { generateJWT, generateJWTChangePassword } = require('../helpers/jwt');
 const Usuario = require('../models/Usuario');
 
-const generateToken = async (uid, email, roles) => await generateJWT(uid, email, roles);
-
-const generateTokenResetPassword = async (email) => await generateJWTChangePassword(email);
-
 const compareCredentials = (password, stored) => bcrypt.compareSync(password, stored);
 
 const generatePassword = (password) => {
-    const salt = bcrypt.genSalt();
+    const salt = bcrypt.genSaltSync();
     return bcrypt.hashSync(password, salt);
 }
 
@@ -156,7 +152,7 @@ const loginUsuario = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Usuario o contraseña no inválido'
             });
-        const token = generateToken(usuario.id, usuario.name, usuario.roles);
+        const token = await generateJWT(usuario.id, usuario.name, usuario.roles);
         res.json({
             ok: true,
             id: usuario.id,
@@ -169,7 +165,7 @@ const loginUsuario = async (req = request, res = response) => {
     }
 };
 const renewToken = async (req = request, res = response) => {
-    const token = generateToken(req.uid, req.name, req.roles);
+    const token = await generateToken(req.uid, req.name, req.roles);
     res.json({
         ok: true,
         token,
