@@ -1,9 +1,9 @@
-const { Schema } = require("mongoose");
-const Componente = require("./Componente");
+const { Schema, model } = require("mongoose");
 
 const AnalisisSchema = Schema({
     analisis: {
         type: String,
+        unique: true,
         required: true,
     },
     descripcion: {
@@ -14,10 +14,11 @@ const AnalisisSchema = Schema({
         type: Number,
         required: true,
     },
-    componentes: {
-        type: [Componente],
+    componentes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Componente',
         required: true,
-    },
+    }],
 });
 
 module.exports = model(
