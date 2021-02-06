@@ -1,8 +1,9 @@
-const { Schema, model } = require("mongoose");
+const { Schema } = require("mongoose");
 
 const UsuarioRegistroSchema = Schema({
     usuario: {
         type: Schema.Types.ObjectId,
+        ref: 'Usuario',
         required: true,
     },
     fecha: {
@@ -12,4 +13,4 @@ const UsuarioRegistroSchema = Schema({
     },
 });
 
-module.exports = model('Usuario-Registro', UsuarioRegistroSchema, 'usuario-registro');
+module.exports = UsuarioRegistroSchema;

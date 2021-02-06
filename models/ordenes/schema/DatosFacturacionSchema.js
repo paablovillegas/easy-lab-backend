@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema } = require("mongoose");
 
 const DatosFacturacionSchema = Schema({
     nombre: {
@@ -21,4 +21,4 @@ const DatosFacturacionSchema = Schema({
         required: true,
     }
 });
-module.exports = model('Datos-Facturacion', DatosFacturacionSchema, 'datos-facturacion');
+module.exports = DatosFacturacionSchema;

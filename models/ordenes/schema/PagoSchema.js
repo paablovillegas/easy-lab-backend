@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema } = require("mongoose");
 
 const PagoSchema = Schema({
     pago: {
@@ -20,4 +20,4 @@ const PagoSchema = Schema({
     },
 });
 
-module.exports = model('Pago', PagoSchema);
+module.exports = PagoSchema;

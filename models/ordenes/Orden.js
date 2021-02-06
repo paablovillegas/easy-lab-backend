@@ -1,36 +1,35 @@
 const { Schema, model } = require("mongoose");
-const Doctor = require("../catalogos/Doctor");
-const Institucion = require("../catalogos/Institucion");
-const Paciente = require("../catalogos/Paciente");
-const Laboratorio = require("../Laboratorio");
-const DatosFacturacion = require("./DatosFacturacion");
-const Pago = require("./Pago");
-const Resultado = require("./Resultado");
-const UsuarioRegistro = require("./UsuarioRegistro");
-
-
+const DatosFacturacionSchema = require("./schema/DatosFacturacionSchema");
+const DoctorSchema = require("./schema/DoctorSchema");
+const InstitucionSchema = require("./schema/InstitucionSchema");
+const LaboratorioSchema = require("./schema/LaboratorioSchema");
+const PacienteSchema = require("./schema/PacienteSchema");
+const PagoSchema = require("./schema/PagoSchema");
+const ResultadoSchema = require("./schema/ResultadoSchema");
+const UsuarioRegistroSchema = require("./schema/UsuarioRegistroSchema");
+ 
 const OrdenSchema = Schema({
     laboratorio: {
-        type: Laboratorio,
+        type: LaboratorioSchema,
         required: true,
     },
     paciente: {
-        type: Paciente,
+        type: PacienteSchema,
         required: true
     },
     doctor: {
-        type: Doctor,
+        type: DoctorSchema,
         required: true,
     },
     institucion: {
-        type: Institucion,
+        type: InstitucionSchema,
         default: undefined
     },
     facturacion: {
-        type: DatosFacturacion,
+        type: DatosFacturacionSchema,
     },
     analsis: {
-        type: [Resultado],
+        type: [ResultadoSchema],
         requred: true
     },
     subtotal: {
@@ -74,10 +73,11 @@ const OrdenSchema = Schema({
     },
     publicado: {
         type: Boolean,
-        default: undefined,
+        required: true,
+        default: false,
     },
     actualizaciones: {
-        type: [UsuarioRegistro],
+        type: [UsuarioRegistroSchema],
         default: [],
     },
     usuario: {
@@ -86,7 +86,7 @@ const OrdenSchema = Schema({
         required: true,
     },
     pagos: {
-        type: [Pago],
+        type: [PagoSchema],
         default: [],
     }
 });
