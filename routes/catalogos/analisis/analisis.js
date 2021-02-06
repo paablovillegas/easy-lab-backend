@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
+const { check, oneOf } = require("express-validator");
 const {
     getAnalisis,
     getAnalisisItem,
@@ -31,6 +31,11 @@ router.post(
 router.put(
     '/:uid',
     [
+        check('analisis', 'Nombre del analisis requerido').optional().trim().isString().not().isEmpty(),
+        check('descripcion', 'Descripcion errónea').optional().trim().isString().not().isEmpty(),
+        check('precio', 'Precio requerido').optional().trim().isNumeric(),
+        check('componentes', 'Al menos un componente es requerido').optional().isArray({ min: 1 }),
+        check('componentes.*', 'Componentes no válidos').optional().trim().isString().not().isEmpty(),
         validarCampos
     ],
     updateAnalisis

@@ -56,6 +56,14 @@ const insertAnalisis = async (req = request, res = response) => {
 const updateAnalisis = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
+        let analisis = await Analisis.findById(uid);
+        if (!analisis)
+            return res.status(400).json({
+                ok: false,
+                msg: 'Análisis no existente',
+            })
+        analisis = await Analisis.findByIdAndUpdate(uid, req.body, { new: true });
+        return res.status(200).json({ ok: true, analisis });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
