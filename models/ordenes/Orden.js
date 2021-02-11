@@ -28,7 +28,7 @@ const OrdenSchema = Schema({
     facturacion: {
         type: DatosFacturacionSchema,
     },
-    analsis: {
+    analisis: {
         type: [ResultadoSchema],
         requred: true
     },
@@ -65,7 +65,7 @@ const OrdenSchema = Schema({
     },
     fecha_entrega: {
         type: Date,
-        default: undefinded,
+        default: undefined,
     },
     pdf: {
         type: String,

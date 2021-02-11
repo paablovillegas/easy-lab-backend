@@ -56,7 +56,7 @@ const insertInstitucion = async (req = request, res = response) => {
 const updateInstitucion = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        const institucion = await Institucion.findById(uid);
+        let institucion = await Institucion.findById(uid);
         if (!institucion)
             return res.status(400).json({
                 ok: false,

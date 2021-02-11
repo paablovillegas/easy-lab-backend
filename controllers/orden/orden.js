@@ -1,13 +1,15 @@
 const { request, response } = require("express");
+const DatosFacturacionSchema = require("../../models/ordenes/schema/DatosFacturacionSchema");
 const Analisis = require("../../models/catalogos/analisis/Analisis");
-const Doctor = require("../../models/catalogos/Doctor");
 const Institucion = require("../../models/catalogos/Institucion");
 const Paciente = require("../../models/catalogos/Paciente");
+const Doctor = require("../../models/catalogos/Doctor");
 const Laboratorio = require("../../models/Laboratorio");
-const DatosFacturacionSchema = require("../../models/ordenes/schema/DatosFacturacionSchema");
-
+const Usuario = require("../../models/Usuario");
+const Orden = require("../../models/ordenes/Orden");
 
 const insertOrden = async (req = request, res = response) => {
+    const { 'x-user': userID } = req.headers;
     const {
         laboratorio: lab,
         paciente: pax,
@@ -18,9 +20,17 @@ const insertOrden = async (req = request, res = response) => {
         descuento_pc,
         otros,
         iva_pc,
+        fecha_entrega,
     } = req.body;
     try {
         let dataOrden = {};
+        const usuario = await Usuario.findById(userID);
+        if (!usuario)
+        return res.status(400).json({
+            ok: false,
+            msg: 'Usuario no válido'
+        });
+        dataOrden.usuario = usuario._id;
         const laboratorio = await Laboratorio.findById(lab);
         if (!laboratorio)
             return res.status(400).json({
@@ -87,7 +97,6 @@ const insertOrden = async (req = request, res = response) => {
             }
             dataOrden.analisis.push({
                 analisis: analisis.analisis,
-                precio: analisis.precio,
                 componentes,
             });
             dataOrden.subtotal += analisis.precio;
@@ -109,12 +118,12 @@ const insertOrden = async (req = request, res = response) => {
             - (dataOrden.descuento || 0)
             - (dataOrden.otros || 0)
             + (dataOrden.iva || 0)
+        dataOrden.fecha_entrega = fecha_entrega;
+
+        dataOrden = new Orden(dataOrden);
+
 
         //TODO: facturacion
-        //TODO: analisis
-
-
-
 
         return res.status(200).json({
             ok: true,
