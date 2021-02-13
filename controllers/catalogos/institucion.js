@@ -3,7 +3,7 @@ const Institucion = require("../../models/catalogos/Institucion");
 
 const getInstituciones = async (req = request, res = response) => {
     try {
-        let instituciones = await Institucion.find();
+        let instituciones = await Institucion.find().sort({ institucion: 1 });
         res.status(200).json({ ok: true, instituciones });
     } catch (err) {
         console.log(err);
@@ -42,7 +42,10 @@ const insertInstitucion = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Institución ya registrada',
             });
-        institucion = new Institucion(req.body);
+        institucion = new Institucion({
+            ...req.body,
+            fecha_creacion: new Date(),
+        });
         await institucion.save();
         res.status(201).json({ ok: true, institucion });
     } catch (err) {
@@ -64,7 +67,10 @@ const updateInstitucion = async (req = request, res = response) => {
             });
         institucion = await Institucion.findByIdAndUpdate(
             uid,
-            req.body,
+            {
+                ...req.body,
+                fecha_actualizacion: new Date(),
+            },
             { new: true }
         );
         res.status(200).json({ ok: true, institucion });

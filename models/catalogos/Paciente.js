@@ -18,13 +18,13 @@ const PacienteSchema = Schema({
         default: undefined,
     },
     telefono: {
-        type: Number,
+        type: String,
         default: undefined,
     },
     genero: {
         type: Number,
         required: true,
-        default: 0,
+        default: 1,
     },
     fecha_nacimiento: {
         type: Date,
@@ -37,7 +37,6 @@ const PacienteSchema = Schema({
     fecha_creacion: {
         type: Date,
         required: true,
-        default: new Date(),
     },
     fecha_actualizacion: {
         type: Date,

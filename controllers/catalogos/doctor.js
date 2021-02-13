@@ -44,7 +44,10 @@ const insertDoctor = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Doctor ya registrado',
             });
-        doctor = new Doctor(req.body);
+        doctor = new Doctor({
+            ...req.body,
+            fecha_creacion: new Date(),
+        });
         await doctor.save();
         res.status(201).json({ ok: true, doctor })
     } catch (err) {
@@ -66,7 +69,10 @@ const updateDoctor = async (req = request, res = resposne) => {
             });
         doctor = await Doctor.findByIdAndUpdate(
             uid,
-            req.body,
+            {
+                ...req.body,
+                fecha_actualizacion: new Date(),
+            },
             { new: true }
         );
         res.status(200).json({ ok: true, doctor });

@@ -45,14 +45,8 @@ const insertPaciente = async (req = request, res = response) => {
                 msg: 'Paciente existente !'
             });
         paciente = new Paciente({
-            nombre,
-            apellido_paterno,
-            apellido_materno,
-            correo,
-            telefono,
-            genero,
-            fecha_nacimiento,
-            direccion
+            ...req.body,
+            fecha_creacion: new Date(),
         });
         await paciente.save();
         res.status(200).json({ ok: true, paciente });
@@ -73,7 +67,14 @@ const updatePaciente = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Paciente no existente !'
             });
-        paciente = await Paciente.findByIdAndUpdate(uid, req.body, { new: true });
+        paciente = await Paciente.findByIdAndUpdate(
+            uid,
+            {
+                ...req.body,
+                fecha_actualizacion: new Date(),
+            },
+            { new: true }
+        );
         res.status(200).json({ ok: true, paciente });
     } catch (err) {
         console.log(err);
