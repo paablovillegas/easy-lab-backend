@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const path = require('path');
+const { subirArchivo } = require("../../helpers/subirArchivo");
 
 const getFile = (req = request, res = response) => {
     const uploadPath = path.join(__dirname, '../../uploads/', 'aa.png');
