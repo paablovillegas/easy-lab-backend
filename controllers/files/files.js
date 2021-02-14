@@ -1,17 +1,14 @@
 const { response, request } = require("express");
 const path = require('path');
 
-const uploadFile = (req = request, res = response) => {
-    if (!req.files || !req.files.archivo) {
-        return res.status(400).json({
-            ok: false,
-            err: 'No se han subido archivos',
-        });
-    }
-    const { archivo } = req.files;
-    console.log(archivo);
+const getFile = (req = request, res = response) => {
+    const uploadPath = path.join(__dirname, '../../uploads/', 'aa.png');
+    res.sendFile(uploadPath)
+}
 
-    const uploadPath = path.join(__dirname, '../../uploads/', archivo.name);
+const uploadFile = (req = request, res = response) => {
+    const { archivo } = req.files;
+    const uploadPath = path.join(__dirname, '../../uploads/', 'aa.png');
 
     archivo.mv(uploadPath, (err) => {
         if (err)
@@ -22,4 +19,5 @@ const uploadFile = (req = request, res = response) => {
 
 module.exports = {
     uploadFile,
+    getFile,
 };

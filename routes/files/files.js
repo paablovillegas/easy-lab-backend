@@ -1,8 +1,15 @@
 const { Router } = require("express");
-const { uploadFile } = require("../../controllers/files/files");
+const { uploadFile, getFile } = require("../../controllers/files/files");
+const { validarArchivo } = require("../../middlewares/validar-file");
 
 const router = Router();
 
-router.post('/', uploadFile);
+router.post(
+    '/',
+    validarArchivo,
+    uploadFile,
+);
+
+router.get('/', getFile)
 
 module.exports = router
