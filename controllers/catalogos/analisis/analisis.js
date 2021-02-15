@@ -41,10 +41,13 @@ const insertAnalisis = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Analisis ya existente'
             });
-        analisisItem = await new Analisis(req.body);
+        analisisItem = await new Analisis({
+            ...req.body,
+            fecha_creacion: new Date(),
+        });
         await analisisItem.save();
         analisisItem = await Analisis.findById(analisisItem._id).populate('componentes');
-        res.status(200).json({ ok: true, analisisItem });
+        res.status(200).json({ ok: true, analisis: analisisItem });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
@@ -62,7 +65,14 @@ const updateAnalisis = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Análisis no existente',
             })
-        analisis = await Analisis.findByIdAndUpdate(uid, req.body, { new: true });
+        analisis = await Analisis.findByIdAndUpdate(
+            uid,
+            {
+                ...req.body,
+                fecha_actualizacion: new Date(),
+            },
+            { new: true }
+        ).populate('componentes');
         return res.status(200).json({ ok: true, analisis });
     } catch (err) {
         console.log(err);

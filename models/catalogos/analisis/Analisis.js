@@ -19,6 +19,14 @@ const AnalisisSchema = Schema({
         ref: 'Componente',
         required: true,
     }],
+    fecha_creacion: {
+        type: Date,
+        required: true,
+    },
+    fecha_actualizacion: {
+        type: Date,
+        default: undefined,
+    },
 });
 
 module.exports = model(
