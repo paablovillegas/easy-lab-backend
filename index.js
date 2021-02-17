@@ -32,6 +32,8 @@ app.use('/lab/pacientes', require('./routes/catalogos/paciente'));
 app.use('/lab/componentes', require('./routes/catalogos/analisis/componente'));
 app.use('/lab/analisis', require('./routes/catalogos/analisis/analisis'));
 app.use('/lab/ordenes', require('./routes/ordenes/orden'));
+app.use('/lab/ordenes/extras', require('./routes/ordenes/extras'));
+
 app.use('/lab/archivos', require('./routes/files/files'));
 
 const { PORT } = process.env;
