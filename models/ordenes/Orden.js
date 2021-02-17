@@ -42,12 +42,12 @@ const OrdenSchema = Schema({
     descuento_pc: {
         type: Number
     },
-    iva_pc: {
+    comision_pc: {
         type: Number,
         required: true,
         default: 16,
     },
-    iva: {
+    comision: {
         type: Number,
         required: true,
     },
@@ -58,10 +58,12 @@ const OrdenSchema = Schema({
         type: Number,
         required: true,
     },
+    comentario: {
+        type: String,
+    },
     fecha_pedido: {
         type: Date,
         required: true,
-        default: new Date(),
     },
     fecha_entrega: {
         type: Date,
