@@ -11,16 +11,13 @@ const PacienteSchema = Schema({
     },
     apellido_materno: {
         type: String,
-        default: undefined,
     },
     correo: {
         type: String,
-        default: undefined,
     },
     telefono: {
         type: Number,
-        default: undefined,
     },
-});
+}, { _id: false });
 
 module.exports = PacienteSchema

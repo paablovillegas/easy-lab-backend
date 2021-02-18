@@ -10,10 +10,8 @@ const SubResultadoSchema = Schema({
     },
     resultado: {
         type: String,
-        required: true,
-        default: '',
     },
-});
+}, { _id: false });
 
 const ResultadoSchema = Schema({
     analisis: {
@@ -24,6 +22,6 @@ const ResultadoSchema = Schema({
         type: [SubResultadoSchema],
         required: true,
     },
-});
+}, { _id: false });
 
 module.exports = ResultadoSchema;

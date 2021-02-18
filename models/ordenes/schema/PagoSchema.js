@@ -9,6 +9,6 @@ const PagoSchema = Schema({
         type: String,
         required: true,
     },
-});
+}, { _id: false });
 
 module.exports = PagoSchema;

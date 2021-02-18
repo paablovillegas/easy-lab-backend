@@ -4,7 +4,6 @@ const LaboratorioSchema = Schema({
     laboratorio: {
         type: String,
         required: true,
-        unique: true,
     },
 });
 

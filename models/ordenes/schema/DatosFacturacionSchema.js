@@ -17,6 +17,6 @@ const DatosFacturacionSchema = Schema({
         type: String,
         required: true,
     },
-});
+}, { _id: false });
 
 module.exports = DatosFacturacionSchema;

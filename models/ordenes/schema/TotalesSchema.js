@@ -6,27 +6,33 @@ const TotalesSchema = new Schema({
         required: true,
     },
     descuento: {
-        type: Number
+        type: Number,
+        required: true,
     },
     descuento_pc: {
-        type: Number
+        type: Number,
+        required: true,
     },
     descuento_2: {
-        type: Number
+        type: Number,
+        required: true,
     },
     comision_pc: {
         type: Number,
+        required: true,
     },
     comision: {
         type: Number,
+        required: true,
     },
     extras: {
         type: Number,
+        required: true,
     },
     total: {
         type: Number,
         required: true,
     },
-});
+}, { _id: false });
 
 module.exports = TotalesSchema;

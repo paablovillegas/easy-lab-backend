@@ -11,20 +11,17 @@ const DoctorSchema = Schema({
     },
     apellido_materno: {
         type: String,
-        default: undefined,
     },
     correo: {
         type: String,
-        default: undefined,
     },
     telefono: {
         type: String,
-        default: undefined,
     },
     comision: {
         type: Number,
         default: 0,
     },
-});
+}, { _id: false });
 
 module.exports = DoctorSchema;

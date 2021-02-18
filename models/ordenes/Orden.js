@@ -11,8 +11,7 @@ const UsuarioRegistroSchema = require("./schema/UsuarioRegistroSchema");
  
 const OrdenSchema = Schema({
     laboratorio: {
-        type: LaboratorioSchema,
-        required: true,
+        type: LaboratorioSchema, //TODO: agregar requerido
     },
     paciente: {
         type: PacienteSchema,
@@ -20,7 +19,6 @@ const OrdenSchema = Schema({
     },
     doctor: {
         type: DoctorSchema,
-        required: true,
     },
     institucion: {
         type: InstitucionSchema,
@@ -58,18 +56,13 @@ const OrdenSchema = Schema({
         required: true,
         default: false,
     },
-    actualizaciones: {
-        type: [UsuarioRegistroSchema],
-        default: [],
-    },
     usuario: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        required: true,
+        ref: 'Usuario', //TODO: requerir usuario
     },
     pagos: {
         type: [PagoSchema],
-        default: [],
+        required: true,
     }
 });
 
