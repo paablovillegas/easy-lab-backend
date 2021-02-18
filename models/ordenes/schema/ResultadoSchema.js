@@ -10,6 +10,8 @@ const SubResultadoSchema = Schema({
     },
     resultado: {
         type: String,
+        required: true,
+        default: '',
     },
 });
 

@@ -9,6 +9,10 @@ const Usuario = require("../../models/Usuario");
 const Orden = require("../../models/ordenes/Orden");
 
 const insertOrden = async (req = request, res = response) => {
+    res.json({ok: true});
+} 
+
+const insertOrden2 = async (req = request, res = response) => {
     const { 'x-user': userID } = req.headers;
     const {
         laboratorio: lab,

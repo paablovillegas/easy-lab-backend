@@ -13,5 +13,10 @@ const DatosFacturacionSchema = Schema({
         type: String,
         required: true,
     },
+    forma_pago: {
+        type: String,
+        required: true,
+    },
 });
+
 module.exports = DatosFacturacionSchema;

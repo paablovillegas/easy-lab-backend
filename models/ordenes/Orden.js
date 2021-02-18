@@ -6,6 +6,7 @@ const LaboratorioSchema = require("./schema/LaboratorioSchema");
 const PacienteSchema = require("./schema/PacienteSchema");
 const PagoSchema = require("./schema/PagoSchema");
 const ResultadoSchema = require("./schema/ResultadoSchema");
+const TotalesSchema = require("./schema/TotalesSchema");
 const UsuarioRegistroSchema = require("./schema/UsuarioRegistroSchema");
  
 const OrdenSchema = Schema({
@@ -23,7 +24,6 @@ const OrdenSchema = Schema({
     },
     institucion: {
         type: InstitucionSchema,
-        default: undefined
     },
     facturacion: {
         type: DatosFacturacionSchema,
@@ -32,33 +32,11 @@ const OrdenSchema = Schema({
         type: [ResultadoSchema],
         requred: true
     },
-    subtotal: {
-        type: Number,
+    totales: {
+        type: TotalesSchema,
         required: true,
     },
-    descuento: {
-        type: Number
-    },
-    descuento_pc: {
-        type: Number
-    },
-    comision_pc: {
-        type: Number,
-        required: true,
-        default: 16,
-    },
-    comision: {
-        type: Number,
-        required: true,
-    },
-    otros: {
-        type: Number
-    },
-    total: {
-        type: Number,
-        required: true,
-    },
-    comentario: {
+    comentarios: {
         type: String,
     },
     fecha_pedido: {
@@ -67,11 +45,13 @@ const OrdenSchema = Schema({
     },
     fecha_entrega: {
         type: Date,
-        default: undefined,
+        required: true,
+    },
+    fecha_actualizacion: {
+        type: Date,
     },
     pdf: {
         type: String,
-        default: undefined,
     },
     publicado: {
         type: Boolean,

@@ -9,15 +9,6 @@ const PagoSchema = Schema({
         type: String,
         required: true,
     },
-    tarjeta: {
-        type: String,
-        default: undefined,
-    },
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        required: true,
-    },
 });
 
 module.exports = PagoSchema;
