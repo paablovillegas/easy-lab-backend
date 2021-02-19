@@ -18,6 +18,10 @@ const ResultadoSchema = Schema({
         type: String,
         required: true,
     },
+    precio: {
+        type: Number,
+        required: true,
+    },
     componentes: {
         type: [SubResultadoSchema],
         required: true,

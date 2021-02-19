@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const DatosFacturacionSchema = require("./schema/DatosFacturacionSchema");
 const DoctorSchema = require("./schema/DoctorSchema");
+const FileSchema = require("./schema/FileSchema");
 const InstitucionSchema = require("./schema/InstitucionSchema");
 const LaboratorioSchema = require("./schema/LaboratorioSchema");
 const PacienteSchema = require("./schema/PacienteSchema");
@@ -10,6 +11,11 @@ const TotalesSchema = require("./schema/TotalesSchema");
 const UsuarioRegistroSchema = require("./schema/UsuarioRegistroSchema");
  
 const OrdenSchema = Schema({
+    folio: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
     laboratorio: {
         type: LaboratorioSchema, //TODO: agregar requerido
     },
@@ -48,8 +54,8 @@ const OrdenSchema = Schema({
     fecha_actualizacion: {
         type: Date,
     },
-    pdf: {
-        type: String,
+    files: {
+        type: [FileSchema],
     },
     publicado: {
         type: Boolean,

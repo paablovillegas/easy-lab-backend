@@ -1,18 +1,18 @@
 const { Schema } = require("mongoose");
 
-const PagoSchema = Schema({
-    pago: {
-        type: Number,
-        required: true,
-    },
-    tipo_pago: {
+const FileSchema = Schema({
+    type: {
         type: String,
         required: true,
     },
-    fecha_pago: {
-        type: Date,
+    file: {
+        type: String,
         required: true,
     },
+    fecha: {
+        type: Date,
+        required: true,
+    }
 }, { _id: false });
 
-module.exports = PagoSchema;
+module.exports = FileSchema;

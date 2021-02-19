@@ -63,6 +63,7 @@ router.post(
         //Analisis
         check('analisis').exists().isArray({ min: 1 }),
         check('analisis.*.analisis').exists().isString().notEmpty(),
+        check('analisis.*.precio').exists().isNumeric(),
         check('analisis.*.componentes').exists().isArray({ min: 1 }),
         check('analisis.*.componentes.*.componente').exists().isString().notEmpty(),
         check('analisis.*.componentes.*.referencia').optional().isString(),

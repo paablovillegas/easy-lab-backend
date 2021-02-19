@@ -2,7 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('./database/config');
 const fileUpload = require('express-fileupload');
+const dayjs = require('dayjs');
+const { definePrototypes } = require('./helpers/prototypes');
+require('dayjs/locale/es');
 require('dotenv').config();
+
+//Dates en español
+dayjs.locale('es');
+//Add prototypes
+definePrototypes();
 
 //Express server
 const app = express();
