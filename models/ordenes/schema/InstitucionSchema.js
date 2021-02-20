@@ -9,6 +9,6 @@ const InstitucionSchema = Schema({
         type: Number,
         default: 0,
     },
-}, { _id: false });
+});
 
 module.exports = InstitucionSchema;

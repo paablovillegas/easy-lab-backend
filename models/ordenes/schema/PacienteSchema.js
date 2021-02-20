@@ -18,6 +18,6 @@ const PacienteSchema = Schema({
     telefono: {
         type: Number,
     },
-}, { _id: false });
+});
 
 module.exports = PacienteSchema

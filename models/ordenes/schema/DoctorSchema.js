@@ -22,6 +22,6 @@ const DoctorSchema = Schema({
         type: Number,
         default: 0,
     },
-}, { _id: false });
+});
 
 module.exports = DoctorSchema;

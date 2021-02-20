@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
-const { insertOrden, fetchDefault } = require("../../controllers/orden/orden");
+const { insertOrden, fetchDefault, fetchBusquedaAvanzada } = require("../../controllers/orden/orden");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
@@ -10,6 +10,33 @@ const router = Router();
 // Ordenes por doctor
 // Ordenes por institucion
 router.get('/', fetchDefault);
+
+router.post(
+    '/avanzado',
+    [
+        oneOf([
+            check('paciente').optional().isMongoId(),
+            check('paciente').optional().isString().isEmpty(),
+            check('paciente').not().exists(),
+        ]),
+        oneOf([
+            check('doctor').optional().isMongoId(),
+            check('doctor').optional().isString().isEmpty(),
+            check('doctor').not().exists(),
+        ]),
+        oneOf([
+            check('institucion').optional().isMongoId(),
+            check('institucion').optional().isString().isEmpty(),
+            check('institucion').not().exists(),
+        ]),
+        oneOf([
+            check('analisis').optional().isMongoId(),
+            check('analisis').optional().isString().isEmpty(),
+            check('analisis').not().exists(),
+        ]),
+    ],
+    fetchBusquedaAvanzada,
+);
 
 router.get('/:uid',);
 
