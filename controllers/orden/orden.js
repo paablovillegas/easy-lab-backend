@@ -24,6 +24,28 @@ const insertOrden = async (req = request, res = response) => {
     }
 }
 
+const fetchItem = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        const orden = await Orden.findById(uid);
+        return res.json({ ok: true, orden });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
+}
+
+const fecthFolio = async (req = request, res = response) => {
+    const { folio } = req.params;
+    try {
+        const orden = await Orden.findOne({ folio: parseInt(folio) });
+        return res.json({ ok: true, orden });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
+}
+
 const fetchDefault = async (req = request, res = response) => {
     try {
         const today = new Date();
@@ -41,7 +63,8 @@ const fetchDefault = async (req = request, res = response) => {
 }
 
 const fetchBusquedaAvanzada = async (req = request, res = response) => {
-    const { paciente, doctor, institucion, analisis, facturado, liquidado, fecha_inicio, fecha_fin } = req.body;
+    const { paciente, doctor, institucion, analisis, facturado,
+        liquidado, fecha_inicio, fecha_fin, pagina = 1, elementos = 10 } = req.body;
     try {
         let searchOptions = [];
         if (fecha_inicio)
@@ -82,13 +105,19 @@ const fetchBusquedaAvanzada = async (req = request, res = response) => {
                 },
             },
             { $unset: ["pago", "total"] },
+            { $skip: (pagina - 1) * elementos },
         ];
         let ordenes;
         if (searchOptions.length) {
-            ordenes = await Orden.aggregate(getTotals);
+            ordenes = await Orden
+                .aggregate(getTotals)
+                .limit(elementos);
         } else {
-            ordenes = await Orden.find();
+            ordenes = await Orden
+                .aggregate([{ $skip: (pagina - 1) * elementos }])
+                .limit(elementos);
         }
+        console.log(ordenes.length)
         return res.json({ ok: true, ordenes })
     } catch (err) {
         console.log(err);
@@ -98,6 +127,8 @@ const fetchBusquedaAvanzada = async (req = request, res = response) => {
 
 module.exports = {
     insertOrden,
+    fetchItem,
+    fecthFolio,
     fetchDefault,
     fetchBusquedaAvanzada,
 };

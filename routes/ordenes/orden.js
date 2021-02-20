@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
-const { insertOrden, fetchDefault, fetchBusquedaAvanzada } = require("../../controllers/orden/orden");
+const { insertOrden, fetchDefault, fetchBusquedaAvanzada, fetchItem, fecthFolio } = require("../../controllers/orden/orden");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
@@ -10,6 +10,8 @@ const router = Router();
 // Ordenes por doctor
 // Ordenes por institucion
 router.get('/', fetchDefault);
+router.get('/:uid', fetchItem);
+router.get('/folio/:folio', fecthFolio);
 
 router.post(
     '/avanzado',
@@ -33,6 +35,28 @@ router.post(
             check('analisis').optional().isMongoId(),
             check('analisis').optional().isString().isEmpty(),
             check('analisis').not().exists(),
+        ]),
+        oneOf([
+            check('facturado').optional().isNumeric(),
+            check('facturado').optional().isString().isEmpty(),
+            check('facturado').not().exists(),
+        ]),
+        oneOf([
+            check('liquidado').optional().isNumeric(),
+            check('liquidado').optional().isString().isEmpty(),
+            check('liquidado').not().exists(),
+        ]),
+        oneOf([
+            check('fecha_inicio').optional().isDate(),
+            check('fecha_inicio').optional().isNumeric(),
+            check('fecha_inicio').optional().isString().isEmpty(),
+            check('fecha_inicio').not().exists(),
+        ]),
+        oneOf([
+            check('fecha_fin').optional().isDate(),
+            check('fecha_fin').optional().isNumeric(),
+            check('fecha_fin').optional().isString().isEmpty(),
+            check('fecha_fin').not().exists(),
         ]),
     ],
     fetchBusquedaAvanzada,
