@@ -23,6 +23,23 @@ const insertOrden = async (req = request, res = response) => {
     }
 }
 
+const fetchDefault = async (req = request, res = response) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const ordenes = await Orden.find({
+            fecha_pedido: {
+                $gte: today,
+            }
+        });
+        res.json({ ok: true, ordenes });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
+}
+
 module.exports = {
-    insertOrden
+    insertOrden,
+    fetchDefault,
 }

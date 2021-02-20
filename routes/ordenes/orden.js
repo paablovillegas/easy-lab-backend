@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
-const { insertOrden } = require("../../controllers/orden/orden");
-const { validacionOrden } = require("../../middlewares/orden-validation");
+const { insertOrden, fetchDefault } = require("../../controllers/orden/orden");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
@@ -10,7 +9,8 @@ const router = Router();
 // Ordenes por paciente
 // Ordenes por doctor
 // Ordenes por institucion
-router.get('/',);
+router.get('/', fetchDefault);
+
 router.get('/:uid',);
 
 // Insert Orden
