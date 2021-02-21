@@ -26,7 +26,7 @@ const crearRecibo = async (orden, root = 'unkwnown') => {
         titulo: 'El laboratorio les desea',
         mensaje: 'un feliz 2021',
     };
-    const fileName = path.join(root, 'recibos', orden._id + '.pdf');
+    const fileName = path.join(orden.paciente._id.toString(), 'recibos', orden._id + '.pdf');
     const filePath = path.join(parentPath, fileName);
     return new Promise((resolve, reject) => {
         pdf.create(templateRecibo(orden), pdfOptions).toFile(filePath, (err) => {

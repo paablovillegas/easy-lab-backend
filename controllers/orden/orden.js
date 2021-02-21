@@ -5,14 +5,13 @@ const Orden = require("../../models/ordenes/Orden");
 
 const insertOrden = async (req = request, res = response) => {
     try {
-        const rootID = req.body.paciente._id;
         let orden = new Orden({
             ...req.body,
             fecha_pedido: new Date(),
         });
         const aux = await Orden.findOne({}, 'folio').sort({ folio: -1 });
         orden.folio = ((aux && aux.folio) || 0) + 1;
-        const file = await crearRecibo(orden, rootID);
+        const file = await crearRecibo(orden);
         orden.files = [...orden.files, { ...file }];
         orden = await orden.save();
         return res.json({ ok: true, orden });
@@ -125,10 +124,29 @@ const fetchBusquedaAvanzada = async (req = request, res = response) => {
     }
 };
 
+const insertPago = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        let orden = await Orden.findById(uid);
+        orden.pagos.push({
+            ...req.body,
+            fecha_pago: new Date(),
+        });
+        const file = await crearRecibo(orden);
+        orden.files = [...orden.files, { ...file }];
+        orden = await orden.save();
+        res.json({ ok: true, orden });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
+}
+
 module.exports = {
     insertOrden,
     fetchItem,
     fecthFolio,
     fetchDefault,
     fetchBusquedaAvanzada,
+    insertPago,
 };
