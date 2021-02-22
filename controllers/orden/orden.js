@@ -142,6 +142,19 @@ const insertPago = async (req = request, res = response) => {
     }
 }
 
+const updateResultados = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        let orden = await Orden.findById(uid);
+        orden.analisis = req.body;
+        orden = await orden.save();
+        res.json({ ok: true, orden });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ ok: false });
+    }
+}
+
 module.exports = {
     insertOrden,
     fetchItem,
@@ -149,4 +162,5 @@ module.exports = {
     fetchDefault,
     fetchBusquedaAvanzada,
     insertPago,
+    updateResultados,
 };

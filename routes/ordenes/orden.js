@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
 const { insertOrden, fetchDefault, fetchBusquedaAvanzada,
-    fetchItem, fecthFolio, insertPago } = require("../../controllers/orden/orden");
+    fetchItem, fecthFolio, insertPago, updateResultados } = require("../../controllers/orden/orden");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
@@ -144,7 +144,9 @@ router.post(
     ],
     insertOrden
 );
-router.put('/:uid',);
+
+router.put('/:uid/resultados', updateResultados);
+
 router.delete('/:uid',);
 
 module.exports = router;
