@@ -1,6 +1,6 @@
 const pdf = require('html-pdf');
 const path = require('path');
-const { currencyFormat } = require("./currencyFormat");
+const { currencyFormat } = require("./numberFormat");
 const { formatFecha } = require("./dateFormat");
 
 const pdfOptions = {
