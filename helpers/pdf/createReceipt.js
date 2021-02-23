@@ -16,7 +16,7 @@ const templatePagos = (pagos) => pagos.reduce((acc, item) => (
 <td>${currencyFormat(item.pago)}</td>
 </tr>`), '');
 
-const templateRecibo = ({ folio, paciente, analisis, totales, pagos, laboratorio }) => `
+const templateRecibo = ({ folio, fecha_pedido, paciente, analisis, totales, pagos, laboratorio }) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,7 +117,7 @@ const templateRecibo = ({ folio, paciente, analisis, totales, pagos, laboratorio
             <tr class="principal">
                 <td>
                     <p>${laboratorio.laboratorio}</p>
-                    <p class="legend">${laboratorio.encargado}</p>
+                    <p class="legend">${formatFecha(fecha_pedido)}</p>
                 </td>
                 <td>{{page}}</td>
             </tr>

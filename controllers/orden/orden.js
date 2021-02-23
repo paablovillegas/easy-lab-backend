@@ -1,6 +1,6 @@
 const { request, response } = require("express");
 const mongoose = require('mongoose');
-const { crearRecibo } = require("../../helpers/pdf/createFile");
+const { crearRecibo, crearResultados } = require("../../helpers/pdf/createFile");
 const Orden = require("../../models/ordenes/Orden");
 
 const insertOrden = async (req = request, res = response) => {
@@ -160,6 +160,9 @@ const publicarOrden = async (req = request, res = response) => {
     try {
         let orden = await Orden.findById(uid);
         orden.publicado = true;
+        const file = await crearResultados(orden);
+        orden.files = [...orden.files, { ...file }];
+        orden = await orden.save();
         res.json({ ok: true, orden });
     } catch (err) {
         console.log(err);
