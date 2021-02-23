@@ -1,17 +1,17 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
 const { insertOrden, fetchDefault, fetchBusquedaAvanzada,
-    fetchItem, fecthFolio, insertPago, updateResultados } = require("../../controllers/orden/orden");
+    fetchItem, fecthFolio, insertPago, updateResultados, publicarOrden } = require("../../controllers/orden/orden");
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
 
-// Ordenes entre dos fechas
-// Ordenes por paciente
-// Ordenes por doctor
-// Ordenes por institucion
 router.get('/', fetchDefault);
+
 router.get('/:uid', fetchItem);
+
+router.get('/:uid/publicar', publicarOrden);
+
 router.get('/folio/:folio', fecthFolio);
 
 router.post(
@@ -62,6 +62,7 @@ router.post(
     ],
     fetchBusquedaAvanzada,
 );
+
 router.post('/:uid/pago', insertPago);
 
 // Insert Orden

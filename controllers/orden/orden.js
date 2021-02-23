@@ -1,6 +1,6 @@
 const { request, response } = require("express");
 const mongoose = require('mongoose');
-const { crearRecibo } = require("../../helpers/createFile");
+const { crearRecibo } = require("../../helpers/pdf/createFile");
 const Orden = require("../../models/ordenes/Orden");
 
 const insertOrden = async (req = request, res = response) => {
@@ -37,7 +37,7 @@ const fetchItem = async (req = request, res = response) => {
 const fecthFolio = async (req = request, res = response) => {
     const { folio } = req.params;
     try {
-        const orden = await Orden.findOne({ folio: parseInt(folio) });
+        const orden = await Orden.findOne({ folio: +folio });
         return res.json({ ok: true, orden });
     } catch (err) {
         console.log(err);
@@ -150,7 +150,19 @@ const updateResultados = async (req = request, res = response) => {
         orden = await orden.save();
         res.json({ ok: true, orden });
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
+}
+
+const publicarOrden = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        let orden = await Orden.findById(uid);
+        orden.publicado = true;
+        res.json({ ok: true, orden });
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({ ok: false });
     }
 }
@@ -163,4 +175,5 @@ module.exports = {
     fetchBusquedaAvanzada,
     insertPago,
     updateResultados,
+    publicarOrden,
 };
