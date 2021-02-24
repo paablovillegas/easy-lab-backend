@@ -122,7 +122,7 @@ const updatePasswordWithToken = async (req = request, res = response) => {
     const { password } = body;
     try {
         const usuario = await Usuario.findOne({ email });
-        if (!usuario) 
+        if (!usuario)
             return res.status(400).json({ ok: false });
         const salt = bcrypt.genSaltSync();
         usuario.password = bcrypt.hashSync(password, salt);
@@ -152,7 +152,7 @@ const loginUsuario = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Usuario o contraseña no inválido'
             });
-        const token = await generateJWT(usuario.id, usuario.name, usuario.roles);
+        const token = await generateJWT(usuario);
         res.json({
             ok: true,
             id: usuario.id,

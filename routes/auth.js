@@ -12,6 +12,7 @@ const {
     updatePasswordWithToken,
     generateTokenChangepassword
 } = require('../controllers/auth');
+const passport = require('passport');
 
 const router = Router();
 
@@ -34,6 +35,12 @@ router.post(
     ],
     updatePasswordWithToken,
 );
+router.use(passport.initialize());
+require('./../middlewares/passport')(passport);
+
+router.get('/', passport.authenticate('jwt', { session: false }), (e, r, n) => {
+    r.status(200).json({ ok: true, msg: ':)' });
+})
 
 router.use(validarJWT);
 

@@ -116,7 +116,6 @@ const fetchBusquedaAvanzada = async (req = request, res = response) => {
                 .aggregate([{ $skip: (pagina - 1) * elementos }])
                 .limit(elementos);
         }
-        console.log(ordenes.length)
         return res.json({ ok: true, ordenes })
     } catch (err) {
         console.log(err);
