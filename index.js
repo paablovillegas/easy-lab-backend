@@ -42,11 +42,13 @@ app.use(fileUpload({
 //Public routes
 app.use('/lab/login', require('./routes/login'));
 
+//Change password route
+app.use('/lab/auth', require('./routes/auth'));
+
 //JWT Auth required
 app.use(passport.authenticate('jwt', { session: false }));
 
 //Private Routes
-app.use('/lab/auth', require('./routes/auth'));
 app.use('/lab/laboratorio', require('./routes/laboratorio'));
 app.use('/lab/instituciones', require('./routes/catalogos/institucion'));
 app.use('/lab/doctores', require('./routes/catalogos/doctor'));

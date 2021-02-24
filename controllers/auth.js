@@ -20,7 +20,10 @@ const crearUsuario = async (req = request, res = response) => {
                 ok: false,
                 msg: 'Correo ya registrado!'
             });
-        usuario = new Usuario(req.body);
+        usuario = new Usuario({
+            ...req.body,
+            fecha_creacion: new Date(),
+        });
         usuario.password = generatePassword(password);
         await usuario.save();
         res.status(201).json({ ok: true });

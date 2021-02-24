@@ -6,14 +6,26 @@ const LaboratorioSchema = Schema({
         required: true,
         unique: true,
     },
-    access_key: {
+    direccion: {
         type: String,
         required: true,
+    },
+    telefono: {
+        type: String,
+    },
+    email: {
+        type: String,
+    },
+    encargado: {
+        type: String,
+        required: true,
+    },
+    logo: {
+        type: String,
     },
     fecha_creacion: {
         type: Date,
         required: true,
-        default: new Date(),
     },
 });
 

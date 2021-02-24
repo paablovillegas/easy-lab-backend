@@ -10,7 +10,7 @@ const transport = new winston.transports.DailyRotateFile({
     filename: 'backend.%DATE%',
     dirname: 'logs',
     extension: '.log',
-    datePattern: 'YYY-MM-DD-HH-mm',
+    datePattern: 'YYYY-MM-DD',
     maxFiles: 5,
 });
 

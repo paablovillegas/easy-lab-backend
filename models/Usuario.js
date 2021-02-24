@@ -16,7 +16,6 @@ const UsuarioSchema = Schema({
     },
     password_last_change: {
         type: Date,
-        default: new Date(),
     },
     active: {
         type: Boolean,
@@ -24,19 +23,19 @@ const UsuarioSchema = Schema({
     },
     roles: {
         type: [String],
-        default: [],
+        required: true,
     },
     fecha_creacion: {
         type: Date,
         required: true,
-        default: new Date(),
     },
     fecha_actualizacion: {
         type: Date,
         default: undefined,
     },
-    laboratory: {
-        type: String
+    laboratorio: {
+        type: Schema.Types.ObjectId,
+        ref: 'Laboratorio',
     },
 });
 

@@ -5,14 +5,18 @@ const { validarCampos } = require("../middlewares/validar-campos");
 
 const router = Router();
 
-router.get('/',getLaboratorios);
+router.get('/', getLaboratorios);
 
 router.get('/:uid', getLaboratorio);
 
 router.post(
     '/',
     [
-        check('laboratorio', 'Laboratorio obligatorio').exists().trim().not().isEmpty(),
+        check('laboratorio', 'Laboratorio obligatorio').exists().trim().notEmpty(),
+        check('direccion', 'Direccion Obligatorio').exists().trim().notEmpty(),
+        check('telefono', 'Telefono Obligatorio').optional().trim().notEmpty(),
+        check('email', 'E-mail Obligatorio').optional().trim().notEmpty(),
+        check('encargado', 'Encargado Obligatorio').exists().trim().notEmpty(),
         validarCampos,
     ],
     insertLaboratorio,
