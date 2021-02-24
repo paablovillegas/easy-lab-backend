@@ -1,11 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const { dbConnection } = require('./database/config');
 const fileUpload = require('express-fileupload');
+const passport = require('passport');
+const express = require('express');
 const dayjs = require('dayjs');
-const { definePrototypes } = require('./helpers/prototypes');
+const cors = require('cors');
 require('dayjs/locale/es');
 require('dotenv').config();
+
+const { definePrototypes } = require('./helpers/prototypes');
+const { dbConnection } = require('./database/config');
+const jwtAuth = require('./middlewares/passport');
 
 //Dates en español
 dayjs.locale('es');
@@ -24,6 +27,10 @@ app.use(cors());
 //JSON Parse
 app.use(express.json());
 
+//Passport middleware
+app.use(passport.initialize());
+jwtAuth(passport);
+
 //File Upload
 app.use(fileUpload({
     useTempFiles: true,
@@ -31,7 +38,13 @@ app.use(fileUpload({
     createParentPath: true,
 }));
 
-//Routes
+//Public routes
+app.use('/lab/login', require('./routes/login'));
+
+//JWT Auth required
+app.use(passport.authenticate('jwt', { session: false }));
+
+//Private Routes
 app.use('/lab/auth', require('./routes/auth'));
 app.use('/lab/laboratorio', require('./routes/laboratorio'));
 app.use('/lab/instituciones', require('./routes/catalogos/institucion'));
