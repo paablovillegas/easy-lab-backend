@@ -9,6 +9,7 @@ require('dotenv').config();
 const { definePrototypes } = require('./helpers/prototypes');
 const { dbConnection } = require('./database/config');
 const jwtAuth = require('./middlewares/passport');
+const logger = require('./helpers/logger');
 
 //Dates en español
 dayjs.locale('es');
@@ -59,5 +60,5 @@ app.use('/lab/archivos', require('./routes/files/files'));
 
 const { PORT } = process.env;
 app.listen(PORT, () => {
-    console.log(`Servidor levantado ${PORT}`);
+    logger.info(`Servidor levantado ${PORT}`);
 });
