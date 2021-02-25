@@ -168,7 +168,7 @@ const loginUsuario = async (req = request, res = response) => {
 };
 
 const renewToken = async (req = request, res = response) => {
-    const token = await generateToken(req.uid, req.name, req.roles);
+    const token = await generateJWT({ _id: res.getHeader('user') });
     res.json({
         ok: true,
         token,
@@ -176,11 +176,11 @@ const renewToken = async (req = request, res = response) => {
 };
 
 const getUsers = async (req = request, res = response) => {
-    const { uid } = req.params;
+    const { lab_id } = req.params;
     try {
         let usuarios;
-        if (uid)
-            usuarios = await Usuario.find({ laboratorio: uid })
+        if (lab_id)
+            usuarios = await Usuario.find({ laboratorio: lab_id })
                 .populate('laboratorio', 'laboratorio');
         else
             usuarios = await Usuario.find()

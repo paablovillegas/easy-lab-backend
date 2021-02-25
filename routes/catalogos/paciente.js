@@ -1,21 +1,24 @@
 const { Router } = require("express");
 const { check, oneOf } = require("express-validator");
 
-const { 
-    getPacientes, 
-    getPaciente, 
-    insertPaciente, 
-    updatePaciente, 
-    deletePaciente 
+const {
+    getPacientes,
+    getPaciente,
+    insertPaciente,
+    updatePaciente,
+    deletePaciente
 } = require('../../controllers/catalogos/paciente');
 const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener todos los pacientes
 router.get('/', getPacientes);
 
+//Obtener un paciente
 router.get('/:uid', getPaciente);
 
+//Crear un nuevo paciente
 router.post(
     '/',
     [
@@ -35,6 +38,7 @@ router.post(
     insertPaciente
 );
 
+//Actualizar un paciente
 router.put(
     '/:uid',
     [
@@ -54,7 +58,7 @@ router.put(
     updatePaciente
 );
 
+//Borrar un paciente
 router.delete('/:uid', deletePaciente);
-
 
 module.exports = router;

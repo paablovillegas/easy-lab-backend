@@ -6,6 +6,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
+//Login del usuario
 router.post(
     '/',
     [
@@ -16,6 +17,7 @@ router.post(
     loginUsuario
 );
 
+//Registro nuevo usuario sin laboratorio
 router.post(
     '/new',
     [

@@ -6,14 +6,19 @@ const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener ordenes de hoy
 router.get('/', fetchDefault);
 
+//Obtener una orden
 router.get('/:uid', fetchItem);
 
+//Publicar en la web una orden
 router.get('/:uid/publicar', publicarOrden);
 
+//Obtener una orden por el folio
 router.get('/folio/:folio', fecthFolio);
 
+//Obtener una orden por busqueda avanzada
 router.post(
     '/avanzado',
     [
@@ -63,9 +68,10 @@ router.post(
     fetchBusquedaAvanzada,
 );
 
+//Agregar un nuevo pago a una orden
 router.post('/:uid/pago', insertPago);
 
-// Insert Orden
+//Insertar una orden
 router.post(
     '/',
     [
@@ -146,8 +152,10 @@ router.post(
     insertOrden
 );
 
+//Actualizar el resultado de una orden
 router.put('/:uid/resultados', updateResultados);
 
+//Borrar una orden
 router.delete('/:uid',);
 
 module.exports = router;

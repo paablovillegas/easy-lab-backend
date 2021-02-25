@@ -11,10 +11,13 @@ const { validarCampos } = require("../../../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener todos los analisis
 router.get('/', getAnalisis);
 
+//Obtener un analisis
 router.get('/:uid', getAnalisisItem);
 
+//Crear un análisis
 router.post(
     '/',
     [
@@ -28,6 +31,7 @@ router.post(
     insertAnalisis
 );
 
+//Actualizar un análisis
 router.put(
     '/:uid',
     [
@@ -41,6 +45,7 @@ router.put(
     updateAnalisis
 );
 
+//Borrar un análisis
 router.delete('/:uid', deleteAnalisis);
 
 module.exports = router;

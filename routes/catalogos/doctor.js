@@ -11,10 +11,13 @@ const { validarCampos } = require("../../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener lista de doctores
 router.get('/', getDoctores);
 
+//Actualizar un doctor
 router.get('/:uid', getDoctor);
 
+//Crear un nuevo doctor
 router.post(
     '/',
     [
@@ -29,6 +32,7 @@ router.post(
     insertDoctor
 );
 
+//Actualizar un doctor
 router.put(
     '/:uid',
     [
@@ -43,6 +47,7 @@ router.put(
     updateDoctor
 )
 
+//Borrar un doctor
 router.delete('/:uid', deleteDoctor);
 
 module.exports = router;

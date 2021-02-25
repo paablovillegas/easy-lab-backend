@@ -11,13 +11,13 @@ const { validarCampos } = require("../../../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener todos los componentes
 router.get('/', getComponentes);
 
-router.get(
-    '/:uid',
-    getComponente,
-);
+//Obtener un componente
+router.get('/:uid', getComponente);
 
+//Crear un componente
 router.post(
     '/',
     [
@@ -28,6 +28,7 @@ router.post(
     insertComponente,
 );
 
+//Actualizar un componente
 router.put(
     '/:uid',
     [
@@ -38,6 +39,7 @@ router.put(
     updateComponente,
 );
 
+//Borrar un componente
 router.delete('/:uid', deleteComponente);
 
 module.exports = router

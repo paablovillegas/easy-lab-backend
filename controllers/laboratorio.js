@@ -87,28 +87,6 @@ const updateLaboratorio = async (req = request, res = response) => {
     }
 };
 
-const deleteLaboratorio = async (req = request, res = response) => {
-    const { uid } = req.params;
-    try {
-        Laboratorio.findByIdAndDelete(
-            uid,
-            function (err, _) {
-                if (err)
-                    return res.status(400).json({
-                        ok: false,
-                        msg: 'Institución no registrada'
-                    });
-                res.status(200).json({ ok: true });
-            }
-        );
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            ok: false
-        });
-    }
-};
-
 module.exports = {
     getLaboratorios,
     getLaboratorio,

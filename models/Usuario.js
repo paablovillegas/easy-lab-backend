@@ -8,7 +8,7 @@ const UsuarioSchema = Schema({
     email: {
         type: String,
         required: true,
-        unique: true, 
+        unique: true,
     },
     password: {
         type: String,
@@ -37,6 +37,11 @@ const UsuarioSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Laboratorio',
     },
+    activo: {
+        type: Boolean,
+        required: true,
+        default: true,
+    }
 });
 
 module.exports = model('Usuario', UsuarioSchema);

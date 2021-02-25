@@ -69,6 +69,14 @@ const OrdenSchema = Schema({
     pagos: {
         type: [PagoSchema],
         required: true,
+    },
+    laboratorio: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
+    usuario_creado: {
+        type: Schema.Types.ObjectId,
+        required: true,
     }
 });
 

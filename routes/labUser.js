@@ -1,10 +1,17 @@
 const { Router } = require("express");
 const { validarCampos } = require("../middlewares/validar-campos");
-const { crearUsuario, getUsers } = require('../controllers/auth');
+const { crearUsuario, getUsers, renewToken } = require('../controllers/auth');
 const { check } = require("express-validator");
 
 const router = Router();
 
+//Generacion de nuevo token de acceso
+router.get(
+    '/renew_token',
+    renewToken
+);
+
+//Generacion de nuevo usuario del mismo laboratorio del que se está logeado
 router.post(
     '/new/lab_user',
     [
@@ -18,8 +25,10 @@ router.post(
     crearUsuario
 );
 
+//Obtencion de todos los usuarios
 router.get('/users', getUsers);
 
-router.get('/users/:uid', getUsers);
+//Obtencion de todos los usuarios de un laboratorio
+router.get('/users/:lab_id', getUsers);
 
 module.exports = router;

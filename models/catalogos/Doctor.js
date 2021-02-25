@@ -33,6 +33,14 @@ const DoctorSchema = Schema({
         type: Date,
         default: undefined,
     },
+    laboratorio: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
+    usuario_creado: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
 });
 
 module.exports = model(

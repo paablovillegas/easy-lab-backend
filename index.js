@@ -44,6 +44,7 @@ app.use(fileUpload({
 app.use('/lab/auth', require('./routes/login'));
 
 //Change password route
+//TODO: Generar comentarios de creacion y definicion de uso
 app.use('/lab/auth', require('./routes/auth'));
 
 //JWT Auth required

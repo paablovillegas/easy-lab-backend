@@ -5,10 +5,13 @@ const { validarCampos } = require("../middlewares/validar-campos");
 
 const router = Router();
 
+//Obtener todos los laboratorios
 router.get('/', getLaboratorios);
 
+//Obtener un laboratorio
 router.get('/:uid', getLaboratorio);
 
+//Crear nuevo laboratorio
 router.post(
     '/',
     [
@@ -22,6 +25,7 @@ router.post(
     insertLaboratorio,
 );
 
+//Actualizar un laboratorio
 router.put(
     '/:uid',
     [
@@ -30,7 +34,5 @@ router.put(
     ],
     updateLaboratorio,
 );
-
-router.delete('/:uid', deleteLaboratorio);
 
 module.exports = router;

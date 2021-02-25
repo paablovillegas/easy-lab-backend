@@ -9,6 +9,7 @@ router.use([
     readCsv,
 ]);
 
+//Obtener las formas de pago o CFDI
 router.get(['/formas_pago', '/uso_cfdi'], getCSV);
 
 module.exports = router;
