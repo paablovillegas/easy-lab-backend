@@ -6,6 +6,7 @@ const cors = require('cors');
 require('dayjs/locale/es');
 require('dotenv').config();
 
+const { getUserInfo } = require('./middlewares/passport-setter');
 const { definePrototypes } = require('./helpers/prototypes');
 const { dbConnection } = require('./database/config');
 const jwtAuth = require('./middlewares/passport');
@@ -40,15 +41,16 @@ app.use(fileUpload({
 }));
 
 //Public routes
-app.use('/lab/login', require('./routes/login'));
+app.use('/lab/auth', require('./routes/login'));
 
 //Change password route
 app.use('/lab/auth', require('./routes/auth'));
 
 //JWT Auth required
-app.use(passport.authenticate('jwt', { session: false }));
+app.use(getUserInfo);
 
 //Private Routes
+app.use('/lab/auth', require('./routes/labUser'));
 app.use('/lab/laboratorio', require('./routes/laboratorio'));
 app.use('/lab/instituciones', require('./routes/catalogos/institucion'));
 app.use('/lab/doctores', require('./routes/catalogos/doctor'));

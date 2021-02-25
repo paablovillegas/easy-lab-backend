@@ -12,6 +12,7 @@ const options = {
 
 const strategy = new JWTStrategy(options, (payload, done) => {
     Usuario.findById(payload.sub)
+        .populate('laboratorio')
         .then(user => {
             if (!user)
                 return done(null, false);

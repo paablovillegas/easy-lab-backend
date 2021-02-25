@@ -22,16 +22,15 @@ const crearUsuario = async (req = request, res = response) => {
             });
         usuario = new Usuario({
             ...req.body,
+            password: generatePassword(password),
+            laboratorio: res.getHeader('lab'),
             fecha_creacion: new Date(),
         });
-        usuario.password = generatePassword(password);
         await usuario.save();
-        res.status(201).json({ ok: true });
+        res.status(201).json({ ok: true, usuario });
     } catch (err) {
         console.log(err);
-        res.status(500).json({
-            ok: false
-        });
+        res.status(500).json({ ok: false });
     }
 };
 
@@ -167,12 +166,30 @@ const loginUsuario = async (req = request, res = response) => {
         });
     }
 };
+
 const renewToken = async (req = request, res = response) => {
     const token = await generateToken(req.uid, req.name, req.roles);
     res.json({
         ok: true,
         token,
     });
+};
+
+const getUsers = async (req = request, res = response) => {
+    const { uid } = req.params;
+    try {
+        let usuarios;
+        if (uid)
+            usuarios = await Usuario.find({ laboratorio: uid })
+                .populate('laboratorio', 'laboratorio');
+        else
+            usuarios = await Usuario.find()
+                .populate('laboratorio', 'laboratorio');
+        res.json({ ok: true, usuarios });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ ok: false });
+    }
 };
 
 module.exports = {
@@ -183,5 +200,7 @@ module.exports = {
     updatePasswordWithOldPassword,
     updatePasswordWithToken,
     loginUsuario,
-    renewToken
+    renewToken,
+
+    getUsers,
 };

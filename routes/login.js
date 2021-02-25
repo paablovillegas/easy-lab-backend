@@ -1,8 +1,8 @@
+const { check, oneOf } = require('express-validator');
 const { Router } = require('express');
-const { check } = require('express-validator');
 
-const { validarCampos } = require('../middlewares/validar-campos');
 const { loginUsuario, crearUsuario } = require('../controllers/auth');
+const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
@@ -24,6 +24,10 @@ router.post(
         check('password', 'Password obligatorio y mayor a 8 caracteres').trim().isLength({ min: 8 }),
         check('roles', 'Roles válidos').optional().isArray(),
         check('roles.*', 'Roles deben ser strings').optional().isString(),
+        oneOf([
+            check('laboratorio').not().exists(),
+            check('laboratorio').exists().isString().isEmpty(),
+        ]),
         validarCampos,
     ],
     crearUsuario

@@ -21,10 +21,6 @@ router.post(
     updatePasswordWithToken,
 );
 
-router.get('/', (e, r, n) => {
-    r.status(200).json({ ok: true, msg: ':)' });
-})
-
 router.post(
     '/jwt/change_password',
     generateTokenChangepassword
