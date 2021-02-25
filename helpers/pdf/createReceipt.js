@@ -42,15 +42,16 @@ const templateRecibo = ({ folio, fecha_pedido, paciente, analisis, totales, pago
 </style>
 </head>
 <body>
-<div id="pageHeader" style="text-align: center;">
+${laboratorio.logo &&
+    `<div id="pageHeader" style="text-align: center;">
     <img src="${laboratorio.logo}">
-</div>
+    </div>`}
 <h2>Orden #${folio.pad(5)}</h2>
 <div class="right">
     <h3>${laboratorio.laboratorio}</h3>
     <p>${laboratorio.direccion}</p>
     <p>${laboratorio.cp} ${laboratorio.ciudad}, ${laboratorio.estado}</p>
-    <p>${laboratorio.correo}</p>
+    <p>${laboratorio.email}</p>
     <p>${laboratorio.telefono}</p>
 </div>
 <div>

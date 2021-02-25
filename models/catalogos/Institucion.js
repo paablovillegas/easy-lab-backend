@@ -22,7 +22,7 @@ const InstitucionSchema = Schema({
         type: Schema.Types.ObjectId,
         required: true,
     },
-    usuario_creado: {
+    usuario: {
         type: Schema.Types.ObjectId,
         required: true,
     },

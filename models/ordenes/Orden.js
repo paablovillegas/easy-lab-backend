@@ -62,20 +62,18 @@ const OrdenSchema = Schema({
         required: true,
         default: false,
     },
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario', //TODO: requerir usuario
-    },
     pagos: {
         type: [PagoSchema],
         required: true,
     },
     laboratorio: {
         type: Schema.Types.ObjectId,
+        ref: 'Laboratorio',
         required: true,
     },
-    usuario_creado: {
+    usuario: {
         type: Schema.Types.ObjectId,
+        ref: 'Usuario',
         required: true,
     }
 });

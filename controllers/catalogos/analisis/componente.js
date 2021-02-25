@@ -3,7 +3,8 @@ const Componente = require("../../../models/catalogos/analisis/Componente");
 
 const getComponentes = async (req = request, res = response) => {
     try {
-        const componentes = await Componente.find();
+        const componentes = await Componente
+            .find({ laboratorio: res.getHeader('lab') });
         return res.status(200).json({ ok: true, componentes });
     } catch (err) {
         console.log(err);
@@ -17,7 +18,10 @@ const getComponentes = async (req = request, res = response) => {
 const getComponente = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        const componente = await Componente.findById(uid);
+        const componente = await Componente.findOne({
+            _id: uid,
+            laboratorio: res.getHeader('lab'),
+        });
         if (!componente)
             return res.status(400).json({
                 ok: false,
@@ -36,13 +40,18 @@ const getComponente = async (req = request, res = response) => {
 const insertComponente = async (req = request, res = response) => {
     const { componente } = req.body;
     try {
-        let comp = await Componente.findOne({ componente });
+        let comp = await Componente
+            .findOne({ componente, laboratorio: res.getHeader('lab'), });
         if (comp)
             return res.json(400).json({
                 ok: false,
                 msg: 'Componente ya registrado !'
             });
-        comp = new Componente(req.body);
+        comp = new Componente({
+            ...req.body,
+            laboratorio: res.getHeader('lab'),
+            usuario: res.getHeader('user'),
+        });
         await comp.save();
         return res.status(200).json({
             ok: true,
@@ -59,7 +68,10 @@ const insertComponente = async (req = request, res = response) => {
 const updateComponente = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        let componente = await Componente.findById(uid);
+        let componente = await Componente.findOne({
+            _id: uid,
+            laboratorio: res.getHeader('lab'),
+        });
         if (!componente)
             return res.status(200).json({
                 ok: false,

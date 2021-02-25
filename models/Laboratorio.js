@@ -10,6 +10,18 @@ const LaboratorioSchema = Schema({
         type: String,
         required: true,
     },
+    ciudad: {
+        type: String,
+        required: true,
+    },
+    estado: {
+        type: String,
+        required: true,
+    },
+    cp: {
+        type: String,
+        required: true,
+    },
     telefono: {
         type: String,
     },

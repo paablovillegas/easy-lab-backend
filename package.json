@@ -1,7 +1,7 @@
 {
   "name": "easy-lab-backend",
   "version": "1.0.0",
-  "description": "Laboratory management project",
+  "description": "Backend laboratorio",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",

@@ -7,13 +7,17 @@ const insertOrden = async (req = request, res = response) => {
     try {
         let orden = new Orden({
             ...req.body,
+            laboratorio: res.getHeader('lab'),
+            usuario: res.getHeader('user'),
             fecha_pedido: new Date(),
         });
         const aux = await Orden.findOne({}, 'folio').sort({ folio: -1 });
         orden.folio = ((aux && aux.folio) || 0) + 1;
-        const file = await crearRecibo(orden);
-        orden.files = [...orden.files, { ...file }];
         orden = await orden.save();
+        const orden2 = await Orden.findById(orden._id).populate('laboratorio');
+        const file = await crearRecibo(orden2);
+        orden.files = [...orden.files, { ...file }];
+        await orden.save();
         return res.json({ ok: true, orden });
     } catch (err) {
         console.log(err);

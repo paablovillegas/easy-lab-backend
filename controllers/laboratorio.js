@@ -92,5 +92,4 @@ module.exports = {
     getLaboratorio,
     insertLaboratorio,
     updateLaboratorio,
-    deleteLaboratorio,
 };

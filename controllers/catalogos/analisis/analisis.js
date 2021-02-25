@@ -1,10 +1,11 @@
 const { request, response } = require("express");
 const Analisis = require("../../../models/catalogos/analisis/Analisis");
-const Componente = require("../../../models/catalogos/analisis/Componente");
 
 const getAnalisis = async (req = request, res = response) => {
     try {
-        const analisis = await Analisis.find().populate('componentes');
+        const analisis = await Analisis
+            .find({ laboratorio: res.getHeader('lab') })
+            .populate('componentes');
         return res.status(200).json({ ok: true, analisis });
     } catch (err) {
         console.log(err);
@@ -17,7 +18,10 @@ const getAnalisis = async (req = request, res = response) => {
 const getAnalisisItem = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        const analisis = await Analisis.findById(uid).populate('componentes');
+        const analisis = await Analisis
+            .findOne({
+                _id: uid, laboratorio: res.getHeader('lab'),
+            }).populate('componentes');
         if (!analisis)
             return res.status(400).json({
                 ok: false,
@@ -35,7 +39,8 @@ const getAnalisisItem = async (req = request, res = response) => {
 const insertAnalisis = async (req = request, res = response) => {
     const { analisis } = req.body;
     try {
-        let analisisItem = await Analisis.findOne({ analisis });
+        let analisisItem = await Analisis
+            .findOne({ analisis, laboratorio: res.getHeader('lab') });
         if (analisisItem)
             return res.status(400).json({
                 ok: false,
@@ -43,6 +48,8 @@ const insertAnalisis = async (req = request, res = response) => {
             });
         analisisItem = await new Analisis({
             ...req.body,
+            laboratorio: res.getHeader('lab'),
+            usuario: res.getHeader('user'),
             fecha_creacion: new Date(),
         });
         await analisisItem.save();
@@ -59,7 +66,10 @@ const insertAnalisis = async (req = request, res = response) => {
 const updateAnalisis = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        let analisis = await Analisis.findById(uid);
+        let analisis = await Analisis.findOne({
+            _id: uid,
+            laboratorio: res.getHeader('lab'),
+        });
         if (!analisis)
             return res.status(400).json({
                 ok: false,

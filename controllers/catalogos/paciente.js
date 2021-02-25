@@ -3,7 +3,8 @@ const Paciente = require("../../models/catalogos/Paciente");
 
 const getPacientes = async (req = request, res = response) => {
     try {
-        const pacientes = await Paciente.find();
+        const pacientes = await Paciente
+            .find({ laboratorio: res.getHeader('lab') });
         res.status(200).json({ ok: true, pacientes });
     } catch (err) {
         console.log(err);
@@ -16,7 +17,10 @@ const getPacientes = async (req = request, res = response) => {
 const getPaciente = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        const paciente = await Paciente.findById(uid);
+        const paciente = await Paciente.findOne({
+            _id: uid,
+            laboratorio: res.getHeader('lab'),
+        })
         res.status(200).json({ ok: true, paciente });
     } catch (err) {
         console.log(err);
@@ -27,18 +31,12 @@ const getPaciente = async (req = request, res = response) => {
 }
 
 const insertPaciente = async (req = request, res = response) => {
-    const {
-        nombre,
-        apellido_paterno,
-        apellido_materno,
-        correo,
-        telefono,
-        genero,
-        fecha_nacimiento,
-        direccion,
-    } = req.body;
+    const { nombre, apellido_paterno, genero, fecha_nacimiento } = req.body;
     try {
-        let paciente = await Paciente.findOne({ nombre, apellido_paterno, genero, fecha_nacimiento });
+        let paciente = await Paciente.findOne({
+            laboratorio: res.getHeader('lab'),
+            nombre, apellido_paterno, genero, fecha_nacimiento
+        });
         if (paciente)
             return res.status(400).json({
                 ok: false,
@@ -46,6 +44,8 @@ const insertPaciente = async (req = request, res = response) => {
             });
         paciente = new Paciente({
             ...req.body,
+            laboratorio: res.getHeader('lab'),
+            usuario: res.getHeader('user'),
             fecha_creacion: new Date(),
         });
         await paciente.save();
@@ -61,7 +61,10 @@ const insertPaciente = async (req = request, res = response) => {
 const updatePaciente = async (req = request, res = response) => {
     const { uid } = req.params;
     try {
-        let paciente = await Paciente.findById(uid);
+        let paciente = await Paciente.findOne({
+            _id: uid,
+            laboratorio: res.getHeader('lab'),
+        })
         if (!paciente)
             return res.status(400).json({
                 ok: false,
