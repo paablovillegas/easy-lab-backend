@@ -50,15 +50,19 @@ const fecthFolio = async (req = request, res = response) => {
 }
 
 const fetchDefault = async (req = request, res = response) => {
+    const { pagina = 1, elementos = 10 } = req.body;
     try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const ordenes = await Orden.find({
-            fecha_pedido: {
-                $gte: today,
-            }
-        });
-        res.json({ ok: true, ordenes });
+        const ordenes = await Orden
+            .find(
+                { fecha_pedido: { $gte: today } },
+                null,
+                { skip: (pagina - 1) * elementos })
+            .limit(elementos);
+        const cantidad = await Orden.countDocuments({ fecha_pedido: { $gte: today } });
+        paginas = Math.ceil(cantidad / elementos);
+        res.json({ ok: true, ordenes: { ordenes, pagina, cantidad, paginas } });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ ok: false });
@@ -111,16 +115,20 @@ const fetchBusquedaAvanzada = async (req = request, res = response) => {
             { $skip: (pagina - 1) * elementos },
         ];
         let ordenes;
+        let paginas;
+        let cantidad;
         if (searchOptions.length) {
-            ordenes = await Orden
-                .aggregate(getTotals)
-                .limit(elementos);
+            ordenes = await Orden.aggregate(getTotals).limit(elementos);
+            cantidad = await Orden.countDocuments(getTotals);
+            paginas = Math.ceil(cantidad / elementos);
         } else {
             ordenes = await Orden
                 .aggregate([{ $skip: (pagina - 1) * elementos }])
                 .limit(elementos);
+            cantidad = await Orden.countDocuments();
+            paginas = Math.ceil(cantidad / elementos);
         }
-        return res.json({ ok: true, ordenes })
+        return res.json({ ok: true, ordenes: { ordenes, pagina, paginas, cantidad } })
     } catch (err) {
         console.log(err);
         return res.status(500).json({ ok: false });

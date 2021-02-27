@@ -7,7 +7,7 @@ const { validarCampos } = require("../../middlewares/validar-campos");
 const router = Router();
 
 //Obtener ordenes de hoy
-router.get('/', fetchDefault);
+router.post('/', fetchDefault);
 
 //Obtener una orden
 router.get('/:uid', fetchItem);
